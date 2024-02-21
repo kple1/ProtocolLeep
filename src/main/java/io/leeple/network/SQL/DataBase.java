@@ -26,13 +26,13 @@ public class DataBase {
         statement.close();
     }
 
-    public void txtDataInput(Connection connection, String path, String column, String[] tables, String dbName) throws SQLException {
+    public void txtDataInput(Connection connection, String path, String[] tables, String dbName, int loop) throws SQLException {
         Statement statement = connection.createStatement();
 
         String useDatabaseQuery = "USE " + dbName;
         statement.executeUpdate(useDatabaseQuery);
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < loop; i++) {
             statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + tables[i] + ".txt' INTO table " + tables[i]);
         }
         statement.close();
