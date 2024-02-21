@@ -9,7 +9,7 @@
     <version>0.1</version>
     <packaging>jar</packaging>
 
-    <name>LeepleLib</name>
+    <name>SQL, Swing Lib</name>
     <description>Easy to use SQL and Swing.</description>
     <url>https://github.com/kple1/LeepleLib</url>
 
