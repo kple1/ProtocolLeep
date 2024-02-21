@@ -26,14 +26,14 @@ public class DataBase {
         statement.close();
     }
 
-    public void txtDataInput(Connection connection, String path, String[] tables, String dbName, int loop) throws SQLException {
+    public void txtDataInput(Connection connection, String path, String[] tables, String dbName) throws SQLException {
         Statement statement = connection.createStatement();
 
         String useDatabaseQuery = "USE " + dbName;
         statement.executeUpdate(useDatabaseQuery);
 
-        for (int i = 0; i < loop; i++) {
-            statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + tables[i] + ".txt' INTO table " + tables[i]);
+        for (int i = 0; i < tables.length; i++) {
+            statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + "' INTO table " + tables[i]);
         }
         statement.close();
     }
@@ -48,6 +48,13 @@ public class DataBase {
             statement.executeUpdate("INSERT INTO" + imgTableName + "(" + imgTableColumn + ") values (LOAD_FILE('" + path + i + ".jpg'))");
         }
         statement.close();
+    }
+
+    public void createUser(Connection connection, String user, String password) throws SQLException{
+        Statement st = connection.createStatement();
+        String createUser = "CREATE USER '" + user +"'@'localhost' IDENTIFIED BY '" + password +"'";
+        st.executeUpdate(createUser);
+        st.close();
     }
 }
 
