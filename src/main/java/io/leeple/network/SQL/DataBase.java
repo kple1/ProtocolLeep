@@ -35,7 +35,6 @@ public class DataBase {
         for (int i = 0; i < tables.length; i++) {
             statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + tables[i] + ".txt' INTO table " + tables[i]);
         }
-        statement.close();
     }
 
     public void imageDataInput(Connection connection, String dbName, int loop, String imgTableName, String imgTableColumn, String path) throws SQLException {
