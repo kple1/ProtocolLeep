@@ -33,7 +33,7 @@ public class DataBase {
         statement.executeUpdate(useDatabaseQuery);
 
         for (int i = 0; i < tables.length; i++) {
-            statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + "' INTO table " + tables[i]);
+            statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + tables[i] + ".txt' INTO table " + tables[i]);
         }
         statement.close();
     }
