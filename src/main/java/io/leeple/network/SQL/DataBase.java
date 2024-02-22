@@ -1,6 +1,7 @@
 package io.leeple.network.SQL;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,6 +36,7 @@ public class DataBase {
         for (int i = 0; i < tables.length; i++) {
             statement.executeUpdate("LOAD DATA LOCAL INFILE '" + path + tables[i] + ".txt' INTO table " + tables[i]);
         }
+        statement.close();
     }
 
     public void imageDataInput(Connection connection, String dbName, int loop, String imgTableName, String imgTableColumn, String path) throws SQLException {
@@ -44,7 +46,7 @@ public class DataBase {
         statement.executeUpdate(useDatabaseQuery);
 
         for (int i = 0; i < loop; i++) {
-            statement.executeUpdate("INSERT INTO" + imgTableName + "(" + imgTableColumn + ") values (LOAD_FILE('" + path + i + ".jpg'))");
+            statement.executeUpdate("INSERT INTO " + imgTableName + "(" + imgTableColumn + ") values (LOAD_FILE('" + path + i + ".jpg'))");
         }
         statement.close();
     }
@@ -54,6 +56,48 @@ public class DataBase {
         String createUser = "CREATE USER '" + user +"'@'localhost' IDENTIFIED BY '" + password +"'";
         st.executeUpdate(createUser);
         st.close();
+    }
+
+    public static String getString(String column, String tableName, Connection connection, String dbName, String getNumColumn, int id) {
+        String name = "";
+
+        try {
+            Statement statement = connection.createStatement();
+            String useDatabaseQuery = "USE " + dbName;
+            statement.executeUpdate(useDatabaseQuery);
+            String query = "SELECT " + column + " FROM " + tableName + " WHERE " + getNumColumn + " = " + id;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                name = resultSet.getString(column);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+    public static int getInt(String column, String tableName, Connection connection, String dbName, String getNumColumn, int id) {
+        int value = 0;
+        try {
+            Statement statement = connection.createStatement();
+            String useDatabaseQuery = "USE " + dbName;
+            statement.executeUpdate(useDatabaseQuery);
+            String query = "SELECT " + column + " FROM " + tableName + " WHERE " + getNumColumn + " = " + id;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                value = resultSet.getInt(column);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }
 
